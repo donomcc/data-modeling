@@ -1,0 +1,79 @@
+Planning
+
+======================================================
+
+Brainstorming tracking
+Username
+Password
+Email
+First name
+Last name
+Favorite recipe
+Favorite ingredient
+Dietary Restrictions
+
+
+Table Ideas
+Users: holds info about the user, including recipes, favorite ingredients and dietary restrictions
+Grocery list: holds ingredients
+Ingredients: holds info about different ingredients
+Recipes: holds info about different recipes, including the ingredients used
+Dietary restrictions: an advanced table stemming from ingredients
+
+
+Relationships
+One-to-one
+Favorite ingredient from the ingredients table
+One-to-many
+Users table has many tables stemming from it
+Many-to-many
+Dietary restrictions
+
+
+
+==========================================================
+
+
+Creating Tables
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(25),
+  password VARCHAR(225),
+  email VARCHAR(225),
+  first_name TEXT,
+  last_name TEXT
+  )
+
+CREATE TABLE dietaryRestrictions (
+  id SERIAL PRIMARY KEY,
+  diet VARCHAR(25)
+  )
+
+CREATE TABLE ingredients (
+  id SERIAL PRIMARY KEY,
+  ingredient VARCHAR(25),
+  type VARCHAR(25),
+  diet_id integer NOT NULL REFERENCES dietaryRestrictions(id)
+  )
+
+CREATE TABLE groceryList (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  ingredient_id INTEGER NOT NULL REFERENCES ingredients(id)
+  )
+ 
+CREATE TABLE recipes (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  ingredient_id INTEGER NOT NULL REFERENCES ingredients(id),
+  instructions TEXT,
+  private BOOLEAN
+  )
+ 
+CREATE TABLE occasions (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  recipe_id INTEGER NOT NULL REFERENCES recipes(id),
+  occasion VARCHAR(255)
+  )
